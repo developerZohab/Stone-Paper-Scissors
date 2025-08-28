@@ -81,5 +81,5 @@ Contributions are welcome!
 ---
 
 
-⭐ If you like this project, **give it a star** on GitHub — it helps a lot!  
+⭐ If you like this project.
 
