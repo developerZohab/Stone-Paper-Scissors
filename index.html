@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors Championship</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <header class="game-header">
+            <h1 class="game-title">🎮 Rock Paper Scissors</h1>
+            <p class="game-subtitle">First to 3 wins is the champion!</p>
+            <div class="game-mode-selector">
+                <button class="mode-btn active" data-mode="classic">Classic</button>
+                <button class="mode-btn" data-mode="speed">Speed Mode</button>
+                <button class="mode-btn" data-mode="best-of-5">Best of 5</button>
+            </div>
+            <div class="timer">
+                <span class="timer-icon">⏱</span>
+                <span class="timer-text">00:00</span>
+            </div>
+        </header>
+
+        <div class="streak-indicator" id="streak-indicator" style="display: none;">
+            <span class="streak-icon">🔥</span>
+            <span class="streak-text">Win Streak: <span id="streak-count">0</span></span>
+        </div>
+
+        <div class="power-ups" id="power-ups" style="display: none;">
+            <h4>Power-ups Available:</h4>
+            <div class="power-up-buttons">
+                <button class="power-up-btn" data-power="shield" title="Shield: Blocks one loss">
+                    🛡️ Shield
+                </button>
+                <button class="power-up-btn" data-power="double" title="Double: Next win counts as 2">
+                    ⚡ Double
+                </button>
+                <button class="power-up-btn" data-power="peek" title="Peek: See opponent's choice">
+                    👁️ Peek
+                </button>
+            </div>
+        </div>
+
+        <div class="scoreboard">
+            <div class="player-score player1">
+                <div class="player-name">Player 1</div>
+                <div class="score" id="p1-score">0</div>
+                <div class="player-choice" id="p1-choice">?</div>
+                <div class="player-stats">
+                    <div class="stat-item">Wins: <span id="p1-wins">0</span></div>
+                    <div class="stat-item">Streak: <span id="p1-streak">0</span></div>
+                </div>
+            </div>
+            <div class="vs-divider">VS</div>
+            <div class="player-score player2">
+                <div class="player-name">Player 2</div>
+                <div class="score" id="p2-score">0</div>
+                <div class="player-choice" id="p2-choice">?</div>
+                <div class="player-stats">
+                    <div class="stat-item">Wins: <span id="p2-wins">0</span></div>
+                    <div class="stat-item">Streak: <span id="p2-streak">0</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="round-counter">
+            <span>Round <span id="current-round">1</span></span>
+        </div>
+
+        <div class="game-area">
+            <div class="countdown" id="countdown" style="display: none;">
+                <div class="countdown-number" id="countdown-number">3</div>
+                <div class="countdown-text">Get Ready!</div>
+            </div>
+            
+            <div class="round-result" id="round-result"></div>
+            
+            <div class="player-sections">
+                <div class="player-section" id="player1-section">
+                    <h3>Player 1 - Choose your move:</h3>
+                    <div class="time-pressure" id="p1-time-pressure" style="display: none;">
+                        <div class="pressure-bar">
+                            <div class="pressure-fill" id="p1-pressure-fill"></div>
+                        </div>
+                        <span class="pressure-text">Time's running out!</span>
+                    </div>
+                    <div class="choice-buttons">
+                        <button class="choice-btn" data-choice="r" data-player="1">
+                            <span class="choice-icon">🪨</span>
+                            <span class="choice-name">Rock</span>
+                            <span class="choice-stats">Strong vs Scissors</span>
+                        </button>
+                        <button class="choice-btn" data-choice="p" data-player="1">
+                            <span class="choice-icon">📄</span>
+                            <span class="choice-name">Paper</span>
+                            <span class="choice-stats">Strong vs Rock</span>
+                        </button>
+                        <button class="choice-btn" data-choice="s" data-player="1">
+                            <span class="choice-icon">✂️</span>
+                            <span class="choice-name">Scissors</span>
+                            <span class="choice-stats">Strong vs Paper</span>
+                        </button>
+                    </div>
+                    <div class="waiting-message" style="display: none;">Waiting for your choice...</div>
+                </div>
+
+                <div class="player-section" id="player2-section" style="display: none;">
+                    <h3>Player 2 - Choose your move:</h3>
+                    <div class="time-pressure" id="p2-time-pressure" style="display: none;">
+                        <div class="pressure-bar">
+                            <div class="pressure-fill" id="p2-pressure-fill"></div>
+                        </div>
+                        <span class="pressure-text">Time's running out!</span>
+                    </div>
+                    <div class="choice-buttons">
+                        <button class="choice-btn" data-choice="r" data-player="2">
+                            <span class="choice-icon">🪨</span>
+                            <span class="choice-name">Rock</span>
+                            <span class="choice-stats">Strong vs Scissors</span>
+                        </button>
+                        <button class="choice-btn" data-choice="p" data-player="2">
+                            <span class="choice-icon">📄</span>
+                            <span class="choice-name">Paper</span>
+                            <span class="choice-stats">Strong vs Rock</span>
+                        </button>
+                        <button class="choice-btn" data-choice="s" data-player="2">
+                            <span class="choice-icon">✂️</span>
+                            <span class="choice-name">Scissors</span>
+                            <span class="choice-stats">Strong vs Paper</span>
+                        </button>
+                    </div>
+                    <div class="waiting-message" style="display: none;">Waiting for your choice...</div>
+                </div>
+            </div>
+
+            <div class="game-controls">
+                <button class="reset-btn" id="reset-game">🔄 New Game</button>
+                <button class="sound-toggle" id="sound-toggle">🔊 Sound</button>
+            </div>
+        </div>
+
+        <div class="achievements" id="achievements">
+            <h4>🏆 Achievements</h4>
+            <div class="achievement-list">
+                <div class="achievement locked" id="first-win">
+                    <span class="achievement-icon">🥇</span>
+                    <span class="achievement-name">First Victory</span>
+                </div>
+                <div class="achievement locked" id="hat-trick">
+                    <span class="achievement-icon">🎩</span>
+                    <span class="achievement-name">Hat Trick</span>
+                </div>
+                <div class="achievement locked" id="speed-demon">
+                    <span class="achievement-icon">⚡</span>
+                    <span class="achievement-name">Speed Demon</span>
+                </div>
+                <div class="achievement locked" id="comeback-king">
+                    <span class="achievement-icon">👑</span>
+                    <span class="achievement-name">Comeback King</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="champion-modal" id="champion-modal" style="display: none;">
+            <div class="modal-content">
+                <div class="champion-crown">👑</div>
+                <h2 class="champion-title" id="champion-text">Player 1 is the Champion!</h2>
+                <div class="celebration-animation">
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                    <div class="confetti"></div>
+                </div>
+                <div class="final-stats">
+                    <div class="stat">
+                        <span class="stat-label">Game Duration:</span>
+                        <span class="stat-value" id="game-duration">0:00</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Final Score:</span>
+                        <span class="stat-value" id="final-score">3 - 0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Total Rounds:</span>
+                        <span class="stat-value" id="total-rounds">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Win Rate:</span>
+                        <span class="stat-value" id="win-rate">0%</span>
+                    </div>
+                </div>
+                <button class="play-again-btn" id="play-again">🎮 Play Again</button>
+            </div>
+        </div>
+
+        <div class="particle-container" id="particles"></div>
+    </div>
+
+    <audio id="win-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    <audio id="lose-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    <audio id="tie-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    <script src="script.js"></script>
+</body>
+</html>
